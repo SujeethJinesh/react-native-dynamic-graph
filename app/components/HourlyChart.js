@@ -66,40 +66,9 @@ function calcHeight(minTemperature: number, maxTemperature: number, temperature:
   return CHART_HEIGHT * (ratio * 0.6 + 0.1);
 }
 
-function WeatherIcons({ ranges, style }) {
-  const icons = ranges.map((range, i) => {
-    const rangeWidth = (range.end - range.start + 1) * UNIT_SIZE;
-    const boxStyle = {
-      position: 'absolute',
-      left: range.start * UNIT_SIZE,
-      width: rangeWidth,
-      justifyContent: 'flex-start',
-      alignItems: 'center'
-    };
-    // Image is cached with its key and does not change even if source has changed.
-    return <View key={i} style={[boxStyle]}>
-      <Image key={range.icon} source={weatherIcons[range.icon]} style={[styles.icon]} />
-    </View>;
-  });
-  return <View style={[{ height: 50 }, style]}>{icons}</View>;
-}
 
-function WeatherBorders({ ranges, style }) {
-  const icons = ranges.map((range, i) => {
-    const boxStyle = {
-      position: 'absolute',
-      left: range.start * UNIT_SIZE,
-      width: (range.end - range.start + 1) * UNIT_SIZE,
-      top: 0,
-      borderStyle: 'solid',
-      borderLeftColor: '#ff666633',
-      borderLeftWidth: i === 0 ? 0 : 1,
-      height: CHART_HEIGHT
-    };
-    return <View key={i} style={[boxStyle]} />;
-  });
-  return <View style={[{ height: 50 }, style]}>{icons}</View>;
-}
+
+
 
 // heights are for 00:00-23:00.
 // To keep enough space to show icons at the screen edge, draw:
@@ -198,9 +167,7 @@ export class HourlyChart extends Component {
     const ranges = makeRanges(future);
 
     return <View style={[style, styles.container]}>
-      <WeatherBorders ranges={ranges} style={{ position: 'absolute', top: 0}} />
       {areaChart}
-      <WeatherIcons ranges={ranges} style={{ position: 'absolute', top: 0 }} />
       <View style={styles.chartItems}>{labels}</View>
     </View>;
   }

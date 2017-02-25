@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import startOfDay from 'date-fns/start_of_day';
 
 import type { Forecast, DateChangeHandler } from '../types';
-import weatherIcons from '../icons';
 import { DateSelector } from '../components/DateSelector';
 import { HourlyChart } from '../components/HourlyChart';
 
@@ -20,7 +19,6 @@ type DateInfo = {
 };
 
 type Props = {
-  location: string,
   today: Date,
   past: DateInfo,
   future: DateInfo,
@@ -29,7 +27,6 @@ type Props = {
 };
 
 function Main({
-  location,
   today,
   past,
   future,
@@ -39,10 +36,9 @@ function Main({
   const temperatures = past.weather.concat(future.weather).map(f => f.temperature);
   const minTemperature = temperatures.length > 0 ? Math.min(...temperatures) : null;
   const maxTemperature = temperatures.length > 0 ? Math.max(0, ...temperatures) : null;
+  
+  //Todo: change marginTop 
   return <View style={styles.container}>
-    <View style={styles.header}>
-      {location.name ? <Text style={[styles.location]}>{location.name}</Text> : null}
-    </View>
     <HourlyChart
       past={past.weather}
       future={future.weather}
@@ -92,10 +88,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  location: {
-    color: '#ff6666cc',
-    fontSize: 20
   },
   footer: {
     flex: 1.2,

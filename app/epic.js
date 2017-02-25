@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 // import 'rxjs/add/observable/combineLatest';
 // import 'rxjs/add/observable/empty';
 
-import { API_KEY } from '../secret.json';
+import { API_KEY } from './secret.json';
 import type {
   Action,
   Forecast,
