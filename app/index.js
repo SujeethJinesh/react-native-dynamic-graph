@@ -22,7 +22,7 @@ store.dispatch({ type: 'APP_INIT' });
 
 function Compare() {
   return <Provider store={store}>
-    <Main customConfig={{height: 100, width: 50, heights: [1,2,3,4,5], color: '#00a1ff'}}/>
+    <Main customConfig={{height: 100, width: 250, heights: [12,222,30,41,250], color: '#00a1ff'}}/>
   </Provider>;
 }
 
