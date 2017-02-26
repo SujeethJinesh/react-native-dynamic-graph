@@ -17,26 +17,12 @@ import {
   Transform
 } from 'ReactNativeART';
 
-import weatherIcons from '../icons';
-import { Forecast } from '../types';
+import { Forecast, CustomConfig } from '../types';
 import { aggregate, AnimatedAggregation } from '../animated/AnimatedAggregation';
 import Dimensions from 'Dimensions';
 
-const CHART_WIDTH = Dimensions.get('window').width;
-const CHART_HEIGHT = 250;
-const UNIT_SIZE = CHART_WIDTH / 24;
-const ICON_SIZE = UNIT_SIZE * 1.6;
-
 const AnimatedGroup = Animated.createAnimatedComponent(Group);
 const AnimatedShape = Animated.createAnimatedComponent(Shape);
-
-type Props = {
-  past: Forecast[],
-  future: Forecast[],
-  minTemperature: number,
-  maxTemperature: number,
-  style: StyleSheet
-};
 
 type WeatherRange = {
   icon: string,
@@ -61,22 +47,19 @@ function makeRanges(forecasts: Forecast[]): WeatherRange[] {
   return ranges;
 }
 
-function calcHeight(minTemperature: number, maxTemperature: number, temperature: number): number {
+function calcHeight(customConfig: CustomConfig, minTemperature: number, maxTemperature: number, temperature: number): number {
   const ratio = (temperature - minTemperature) / (maxTemperature - minTemperature);
-  return CHART_HEIGHT * (ratio * 0.6 + 0.1);
+  return customConfig.height * (ratio * 0.6 + 0.1);
 }
-
-
-
 
 
 // heights are for 00:00-23:00.
 // To keep enough space to show icons at the screen edge, draw:
 // - the previous days' 23:30-24:00 with the value of 00:00.
 // - 23:00-23:30 with the value of 23:00.
-function areaChartPath(w: number, h: number, heights: number[]) {
+function areaChartPath(customConfig: CustomConfig, w: number, h: number, heights: number[]) {
   const points = heights.map((height, i) => ({
-    x: (0.5 + i) * UNIT_SIZE,
+    x: (0.5 + i) * customConfig.width/customConfig.heights.length,
     y: h - height
   }));
   // http://stackoverflow.com/questions/7054272/how-to-draw-smooth-curve-through-n-points-using-javascript-html5-canvas
@@ -84,7 +67,7 @@ function areaChartPath(w: number, h: number, heights: number[]) {
   let path = Path().moveTo(0, h)
     .lineTo(0, points[i].y)
     .lineTo(points[i].x, points[i].y);
-  for (i = 1; i < 24 - 2; i++) {
+  for (i = 1; i < customConfig.heights.length - 2; i++) {
     const p = points[i];
     const q = points[i + 1];
     const xc = (p.x + q.x) / 2;
@@ -93,7 +76,7 @@ function areaChartPath(w: number, h: number, heights: number[]) {
   }
   path = path
     .curveTo(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y)
-    .lineTo(CHART_WIDTH, points[i + 1].y);
+    .lineTo(w, points[i + 1].y);
   return path.lineTo(w, h).close();
 }
 
@@ -102,12 +85,12 @@ type AnimatedPath<T> = {
   path: AnimatedAggregation<T>
 };
 
-function buildAnimatedPath(): AnimatedPath<*> {
-  const animatedHeights = Array.from(Array(24))
+function buildAnimatedPath(customConfig: CustomConfig): AnimatedPath<*> {
+  const animatedHeights = Array.from(Array(customConfig.heights.length))
     .map(() => new Animated.Value(0));
   const animatedPath = aggregate(
     animatedHeights,
-    heights => areaChartPath(CHART_WIDTH, CHART_HEIGHT, heights)
+    heights => areaChartPath(customConfig, customConfig.width, customConfig.height, heights)
   );
   return {
     heights: animatedHeights,
@@ -115,8 +98,8 @@ function buildAnimatedPath(): AnimatedPath<*> {
   };
 }
 
-function springPath(animatedPath: AnimatedPath<*>, minTemperature: number, maxTemperature: number, forecasts: Forecast[]): void {
-  const heights = forecasts.map(f => calcHeight(minTemperature, maxTemperature, f.temperature));
+function springPath(customConfig: CustomConfig,  animatedPath: AnimatedPath<*>, minTemperature: number, maxTemperature: number, forecasts: Forecast[]): void {
+  const heights = forecasts.map(f => calcHeight(customConfig, minTemperature, maxTemperature, f.temperature));
   const anims = animatedPath.heights.map((ah, i) => {
     return Animated.spring(ah, {
       toValue: heights[i],
@@ -136,8 +119,8 @@ export class HourlyChart extends Component {
   constructor(props: Props) {
     super();
     this.state = {
-      future: buildAnimatedPath(),
-      past: buildAnimatedPath()
+      future: buildAnimatedPath(props.customConfig),
+      past: buildAnimatedPath(props.customConfig)
     };
   }
 
@@ -145,54 +128,38 @@ export class HourlyChart extends Component {
     // TODO: We need more stable min/max tempertures.
     // Otherwise min/max temperature's change makes unchnaged date's chart move.
     if (this.props.future !== nextProps.future || this.props.past !== nextProps.past) {
-      springPath(this.state.future, nextProps.minTemperature, nextProps.maxTemperature, nextProps.future);
-      springPath(this.state.past, nextProps.minTemperature, nextProps.maxTemperature, nextProps.past);
+      springPath(this.props.customConfig, this.state.future, nextProps.minTemperature, nextProps.maxTemperature, nextProps.future);
+      springPath(this.props.customConfig, this.state.past, nextProps.minTemperature, nextProps.maxTemperature, nextProps.past);
     }
   }
 
   render() {
     const { past, future, style } = this.props;
-
-    const labels = past.slice(0, 12).map((h, i) => (
-      <Text key={i} style={[styles.hourLabel]}>{i * 2}</Text>
-    ));
+    const CHART_HEIGHT = this.props.customConfig.height;
+    const CHART_WIDTH = this.props.customConfig.width;
+    const customConfig = this.props.customConfig;
 
     const areaChart = <View style={[{ width: CHART_WIDTH, height: CHART_HEIGHT, position: 'absolute', top: 0 }]}>
       <Surface width={CHART_WIDTH} height={CHART_HEIGHT} style={[{ backgroundColor: '#00000000' }]}>
         <AnimatedShape fill="#99999944" d={this.state.past.path} />
-        <AnimatedShape fill="#ff666666" d={this.state.future.path} />
+        <AnimatedShape fill={customConfig.color} d={this.state.future.path} />
       </Surface>
     </View>;
 
     const ranges = makeRanges(future);
 
-    return <View style={[style, styles.container]}>
+    return <View style={[style, styles.container, {height: customConfig.height + 25}, {width: customConfig.width}]}>
       {areaChart}
-      <View style={styles.chartItems}>{labels}</View>
     </View>;
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: CHART_WIDTH,
-    height: CHART_HEIGHT + 25,
     justifyContent: 'flex-end'
   },
   chartItems: {
     alignItems: 'flex-end',
     flexDirection: 'row',
-  },
-  hourLabel: {
-    textAlign: 'center',
-    marginTop: 4,
-    marginRight: 9,
-    width: UNIT_SIZE * 2 - 9,
-    fontWeight: 'bold',
-    color: '#99999988',
-  },
-  icon: {
-    width: ICON_SIZE,
-    height: ICON_SIZE
   }
 });

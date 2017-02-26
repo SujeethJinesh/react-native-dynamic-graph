@@ -3,13 +3,12 @@ import React from 'react';
 import {
   StyleSheet,
   Text,
-  View,
-  Image
+  View
 } from 'react-native';
 import { connect } from 'react-redux';
 import startOfDay from 'date-fns/start_of_day';
 
-import type { Forecast, DateChangeHandler } from '../types';
+import type { Forecast, DateChangeHandler, CustomConfig } from '../types';
 import { DateSelector } from '../components/DateSelector';
 import { HourlyChart } from '../components/HourlyChart';
 
@@ -23,7 +22,8 @@ type Props = {
   past: DateInfo,
   future: DateInfo,
   onFutureChange: DateChangeHandler,
-  onPastChange: DateChangeHandler
+  onPastChange: DateChangeHandler,
+  customConfig: CustomConfig
 };
 
 function Main({
@@ -31,13 +31,13 @@ function Main({
   past,
   future,
   onPastChange,
-  onFutureChange
+  onFutureChange,
+  customConfig
 }: Props) {
   const temperatures = past.weather.concat(future.weather).map(f => f.temperature);
   const minTemperature = temperatures.length > 0 ? Math.min(...temperatures) : null;
   const maxTemperature = temperatures.length > 0 ? Math.max(0, ...temperatures) : null;
   
-  //Todo: change marginTop 
   return <View style={styles.container}>
     <HourlyChart
       past={past.weather}
@@ -45,6 +45,7 @@ function Main({
       minTemperature={minTemperature}
       maxTemperature={maxTemperature}
       style={[styles.chart]}
+      customConfig={customConfig}
     />
     <View style={styles.footer}>
       <DateSelector

@@ -30,7 +30,7 @@ export function DateSelector({ candidates, onChange, today, textStyle }: Props) 
   ));
   return <View style={[styles.container]}>
     <ScrollView
-      // https://github.com/facebook/react-native/issues/2251
+      
       onMomentumScrollEnd={onScroll(onChange, candidates)}
       horizontal={true}
       pagingEnabled={true}

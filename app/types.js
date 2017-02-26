@@ -17,4 +17,11 @@ export type Action = {
   payload: any
 };
 
+export type CustomConfig = {
+  height: Number,
+  width: Number,
+  heights: React.PropTypes.array,
+  color: React.PropTypes.string
+};
+
 export type ChangeHandler = (date: Date) => void;
