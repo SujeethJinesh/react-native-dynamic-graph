@@ -25,15 +25,9 @@ const AnimatedGroup = Animated.createAnimatedComponent(Group);
 const AnimatedShape = Animated.createAnimatedComponent(Shape);
 
 type WeatherRange = {
-  icon: string,
   start: number,
   end: number
 };
-
-function calcHeight(customConfig: CustomConfig, minTemperature: number, maxTemperature: number, temperature: number): number {
-  const ratio = (temperature - minTemperature) / (maxTemperature - minTemperature);
-  return customConfig.height * (ratio * 0.6 + 0.1);
-}
 
 
 // heights are for 00:00-23:00.
@@ -42,8 +36,8 @@ function calcHeight(customConfig: CustomConfig, minTemperature: number, maxTempe
 // - 23:00-23:30 with the value of 23:00.
 function areaChartPath(customConfig: CustomConfig, w: number, h: number, heights: number[]) {
   const points = heights.map((height, i) => ({
-    x: (0.5 + i) * customConfig.width/customConfig.heights.length,
-    y: h - height
+    x: (i) * customConfig.width/customConfig.heights.length,
+    y: h-height //Math.floor(h - height + h/height)
   }));
   // http://stackoverflow.com/questions/7054272/how-to-draw-smooth-curve-through-n-points-using-javascript-html5-canvas
   let i = 0;
