@@ -19,6 +19,7 @@ import type {
 import type { State } from './reducers';
 
 export default function (action$: ActionsObservable<Action>, store: MiddlewareAPI<State, Action>): Observable<Action> {
+  //remove geolocation from here, cause of bottleneck
   const locationCoords$ = action$.ofType('APP_INIT')
     .mergeMap(() => Observable.fromPromise(getLocation()))
     .map(coords => ({ type: 'LOCATION_COORDS_CHANGED', payload: coords }));
