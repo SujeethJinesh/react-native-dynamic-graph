@@ -11,6 +11,8 @@ To change parameters like the height, width, values, and color, edit them in ./a
 
 - [Shuhei](https://github.com/shuhei) For open source-ing his graphs
 
-## Known Issues
+## Known Issues/TODOs
 
-1) Does not work for negative numbers
+1) Does not work for negative numbers.
+2) Geolocation runs in background.
+3) Heights do not scale to passed in height.
