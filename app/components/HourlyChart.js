@@ -24,12 +24,6 @@ import Dimensions from 'Dimensions';
 const AnimatedGroup = Animated.createAnimatedComponent(Group);
 const AnimatedShape = Animated.createAnimatedComponent(Shape);
 
-type WeatherRange = {
-  start: number,
-  end: number
-};
-
-
 // heights are for 00:00-23:00.
 // To keep enough space to show icons at the screen edge, draw:
 // - the previous days' 23:30-24:00 with the value of 00:00.

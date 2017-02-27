@@ -8,8 +8,7 @@ import {
 import { connect } from 'react-redux';
 import startOfDay from 'date-fns/start_of_day';
 
-import type { Forecast, DateChangeHandler, CustomConfig } from '../types';
-import { DateSelector } from '../components/DateSelector';
+import type { CustomConfig } from '../types';
 import { HourlyChart } from '../components/HourlyChart';
 
 type Props = {
@@ -37,9 +36,6 @@ const stateToProps = state => state;
 const dispatchToProps = dispatch => ({
   onPastChange(date: Date): void {
     dispatch({ type: 'PAST_DATE_CHANGED', payload: date });
-  },
-  onFutureChange(date: Date): void {
-    dispatch({ type: 'FUTURE_DATE_CHANGED', payload: date });
   }
 });
 Main = connect(stateToProps, dispatchToProps)(Main);
