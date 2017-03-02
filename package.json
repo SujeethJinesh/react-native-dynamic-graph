@@ -2,10 +2,15 @@
   "name": "react-native-dynamic-graph",
   "version": "0.0.1",
   "main": "app/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SujeethJinesh/react-native-dynamic-graph"
+  },
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
+  "homepage": "https://github.com/SujeethJinesh/react-native-dynamic-graph#readme",
   "dependencies": {
     "art": "^0.10.1",
     "date-fns": "^1.9.0",
