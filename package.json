@@ -1,5 +1,5 @@
 {
-  "name": "Compare",
+  "name": "react-native-dynamic-graph",
   "version": "0.0.1",
   "main": "app/index.js",
   "private": true,
