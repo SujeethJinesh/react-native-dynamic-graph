@@ -1,6 +1,6 @@
 /* @flow */
 import React, { Component } from 'react';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, View } from 'react-native';
 
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider, connect } from 'react-redux';
@@ -11,19 +11,45 @@ import reducers from './reducers';
 import epic from './epic';
 import Main from './containers/Main';
 
-const store = createStore(
-  combineReducers(reducers),
-  applyMiddleware(
-    createEpicMiddleware(epic),
-    createLogger()
-  )
-);
-store.dispatch({ type: 'APP_INIT' });
 
-function Compare() {
-  return <Provider store={store}>
-    <Main customConfig={{height: 250, width: 200, heights: [12,20,30,41,250, 12, 213, 123, 65], color: '#00a1ff'}}/>
-  </Provider>;
+// const store = createStore(
+//   combineReducers(reducers),
+//   applyMiddleware(
+//     createEpicMiddleware(epic),
+//     createLogger()
+//   )
+// );
+// store.dispatch({ type: 'APP_INIT' });
+
+class Graph extends Component {
+
+  // store = createStore(
+  //     combineReducers(reducers),
+  //     applyMiddleware(
+  //       createEpicMiddleware(epic),
+  //       createLogger()
+  //     )
+  // ).dispatch({ type: 'APP_INIT' });
+
+  render() {
+
+      const store = createStore(
+      combineReducers(reducers),
+      applyMiddleware(
+        createEpicMiddleware(epic),
+        createLogger()
+      )
+    );
+    store.dispatch({ type: 'APP_INIT' });
+
+    return (
+      <Provider store={store}>
+      <Main customConfig={this.props.customConfig}/>
+    </Provider>
+    );
+  }
 }
 
-AppRegistry.registerComponent('Compare', () => Compare);
+//example customConfig = {height: 250, width: 200, heights: [12,200,31,61,25, 120, 213, 123, 65], color: '#ff0000'}
+
+export default Graph;

@@ -13,6 +13,6 @@ To change parameters like the height, width, values, and color, edit them in ./a
 
 ## Known Issues/TODOs
 
-1) Does not work for negative numbers.
-2) Geolocation runs in background.
+1) Does not work for negative numbers.\n
+2) Geolocation runs in background.\n
 3) Heights do not scale to passed in height.
