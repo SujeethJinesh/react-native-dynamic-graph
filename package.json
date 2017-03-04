@@ -1,6 +1,6 @@
 {
   "name": "react-native-dynamic-graph",
-  "version": "0.0.14",
+  "version": "0.0.16",
   "main": "app/index.js",
   "repository": {
     "type": "git",

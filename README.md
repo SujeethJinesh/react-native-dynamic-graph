@@ -5,6 +5,12 @@ npm install react-native-dynamic-graph
 
 To change parameters like the height, width, values, and color, edit them in ./app/index.js under the Main Component's props.
 
+Import:
+
+```js
+import Graph from 'react-native-dynamic-graph';
+```
+
 ```js
 <Graph customConfig={{height: 250, width: 200, heights: [12,200,31,61,25, 120, 213, 123, 65], color: '#ff0000'}}/>
 ```
