@@ -1,6 +1,5 @@
-/* @flow */
-import React, { Component } from 'react';
-import { AppRegistry, View } from 'react-native';
+import React, { Component, PropTypes } from 'react';
+import { Animated, View } from 'react-native';
 
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider, connect } from 'react-redux';
@@ -21,7 +20,7 @@ import Main from './containers/Main';
 // );
 // store.dispatch({ type: 'APP_INIT' });
 
-class Graph extends Component {
+export default class Graph extends Component {
 
   // store = createStore(
   //     combineReducers(reducers),
@@ -31,8 +30,11 @@ class Graph extends Component {
   //     )
   // ).dispatch({ type: 'APP_INIT' });
 
-  render() {
+  constructor(props) {
+    super(props);
+  }
 
+  render() {
       const store = createStore(
       combineReducers(reducers),
       applyMiddleware(
@@ -51,5 +53,3 @@ class Graph extends Component {
 }
 
 //example customConfig = {height: 250, width: 200, heights: [12,200,31,61,25, 120, 213, 123, 65], color: '#ff0000'}
-
-export default Graph;

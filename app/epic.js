@@ -1,4 +1,3 @@
-/* @flow */
 import { LayoutAnimation } from 'react-native';
 import type { MiddlewareAPI } from 'redux';
 import { ActionsObservable } from 'redux-observable';

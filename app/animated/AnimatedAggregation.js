@@ -1,4 +1,3 @@
-/* @flow */
 import { Animated } from 'react-native';
 
 const AnimatedWithChildren = Animated.Value.prototype.constructor;

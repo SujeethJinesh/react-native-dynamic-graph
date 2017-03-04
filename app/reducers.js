@@ -1,4 +1,3 @@
-/* @flow */
 import startOfDay from 'date-fns/start_of_day';
 import addDays from 'date-fns/add_days';
 import subDays from 'date-fns/sub_days';
