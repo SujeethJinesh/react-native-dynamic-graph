@@ -1,6 +1,6 @@
 {
   "name": "react-native-dynamic-graph",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "app/index.js",
   "repository": {
     "type": "git",
@@ -14,14 +14,15 @@
   "dependencies": {
     "art": "^0.10.1",
     "date-fns": "^1.9.0",
-    "react": "15.3.2",
-    "react-native": "^0.36.0",
-    "react-native-svg": "^5.1.4",
+    "react": "^15.4.0",
+    "react-native": "^0.40.0",
+    "react-native-svg": "^5.1.5",
     "react-redux": "^4.4.5",
     "redux": "^3.6.0",
     "redux-logger": "^2.7.0",
     "redux-observable": "^0.12.1",
-    "rxjs": "^5.0.0-rc.1"
+    "rxjs": "^5.0.0-rc.1",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",
