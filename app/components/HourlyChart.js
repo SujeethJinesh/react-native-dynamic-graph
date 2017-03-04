@@ -14,11 +14,11 @@ import {
   Shape,
   Surface,
   Transform
-} from 'ReactNativeART';
+} from '../../../react-native/Libraries/ART/ReactNativeART';
 
 import { Forecast, CustomConfig } from '../types';
 import { aggregate, AnimatedAggregation } from '../animated/AnimatedAggregation';
-import Dimensions from 'Dimensions';
+//import Dimensions from 'Dimensions';
 
 const AnimatedGroup = Animated.createAnimatedComponent(Group);
 const AnimatedShape = Animated.createAnimatedComponent(Shape);
